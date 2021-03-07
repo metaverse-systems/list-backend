@@ -20,8 +20,8 @@ class CreateMetaverseSystemsListEntriesTable extends Migration
             $table->uuid('user_id');
             $table->uuid('list_id');
             $table->string('text');
-            $table->enum('checked', ['none', 'checked', 'unchecked'])->default('none');
-            $table->bigInteger('count')->default(-1);
+            $table->boolean('checked')->default(false);
+            $table->bigInteger('count')->default(0);
         });
     }
 

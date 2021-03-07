@@ -4,6 +4,7 @@ namespace MetaverseSystems\ListBackend\Controllers;
 
 use MetaverseSystems\ListBackend\Models\msList;
 use Illuminate\Http\Request;
+use Validator;
 
 class ListController extends \App\Http\Controllers\Controller
 {
@@ -36,12 +37,25 @@ class ListController extends \App\Http\Controllers\Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'hasCheckbox' => 'required',
+            'hasCount' => 'required'
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
         $list = new msList;
         $list->user_id = 0;
         $list->id = (string)\Str::uuid();
         $list->name = $request->input('name');
+        $list->hasCheckbox = $request->input('hasCheckbox');
+        $list->hasCount = $request->input('hasCount');
         $list->save();
-        return response()->json([], 201);
+        return response()->json($list, 201);
     }
 
     /**
@@ -50,9 +64,10 @@ class ListController extends \App\Http\Controllers\Controller
      * @param  \App\msList  $list
      * @return \Illuminate\Http\Response
      */
-    public function show(msList $list)
+    public function show($id)
     {
-        //
+        $list = msList::where('id', $id)->first();
+        return $list;
     }
 
     /**
@@ -70,22 +85,50 @@ class ListController extends \App\Http\Controllers\Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\msList  $list
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, msList $list)
+    public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'hasCheckbox' => 'required',
+            'hasCount' => 'required'
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        $list = msList::where('id', $id)->first();
+        if(!$list)
+        {
+            return response()->json(['error' => "List $id not found."], 404);
+        }
+
+        $list->name = $request->input('name');
+        $list->hasCheckbox = $request->input('hasCheckbox');
+        $list->hasCount = $request->input('hasCount');
+        $list->save();
+        return response()->json($list, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\msList  $list
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(msList $list)
+    public function destroy($id)
     {
-        //
+        $list = msList::where('id', $id)->first();
+        if(!$list)
+        {
+            return response()->json(['error' => "List $id not found."], 404);
+        }
+
+        $list->delete();
+        return response()->json([], 204);
     }
 }

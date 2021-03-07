@@ -1,0 +1,40 @@
+@url = http://127.0.0.1:8000
+@list_id = a250d39a-1f9b-425d-b0bf-4f7176423569
+
+### Get all lists
+
+GET {{url}}/api/list
+Accept: application/json
+
+### Get one list by id
+
+GET {{url}}/api/list/{{list_id}}
+Accept: application/json
+
+### Create a list
+
+POST {{url}}/api/list
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "List 1",
+    "hasCheckbox": true,
+    "hasCount": false
+}
+
+### Update a list
+
+POST {{url}}/api/list/{{list_id}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Grocery list",
+    "hasCheckbox": true,
+    "hasCount": false
+}
+
+### Delete a list
+
+DELETE {{url}}/api/list/{{list_id}}

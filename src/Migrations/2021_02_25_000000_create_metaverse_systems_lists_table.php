@@ -19,6 +19,8 @@ class CreateMetaverseSystemsListsTable extends Migration
             $table->softDeletes();
             $table->uuid('user_id');
             $table->string('name');
+            $table->boolean('hasCheckbox')->default(false);
+            $table->boolean('hasCount')->default(false);
         });
     }
 

@@ -1,0 +1,41 @@
+@url = http://127.0.0.1:8000
+@list_id = a250d39a-1f9b-425d-b0bf-4f7176423569
+@entry_id = 9bb3367b-d241-4bab-afdb-e0d9d79a940d
+
+### Get all entries for list {{list_id}}
+
+GET {{url}}/api/list/{{list_id}}/entry
+Accept: application/json
+
+### Get one entry by id
+
+GET {{url}}/api/list/{{list_id}}/entry/{{entry_id}}
+Accept: application/json
+
+### Create an entry
+
+POST {{url}}/api/list/{{list_id}}/entry
+Accept: application/json
+Content-Type: application/json
+
+{
+    "text": "First line",
+    "checked": false,
+    "count": 0
+}
+
+### Update an entry
+
+POST {{url}}/api/list/{{list_id}}/entry/{{entry_id}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "text": "Entry 1",
+    "checked": false,
+    "count": 0
+}
+
+### Delete an entry
+
+DELETE {{url}}/api/list/{{list_id}}/entry/{{entry_id}}
